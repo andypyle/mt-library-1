@@ -1,0 +1,18 @@
+$blue 	: 	#3498db;
+$green 	: 	#2ecc71;
+$red 		: 	#e74c3c;
+$dblue 	: 	#34495e;
+$orange : 	#f39c12;
+
+$black 	: 	lighten(black, 8%);
+$white 	: 	#ecf0f1;
+
+$colorList : (
+	'blue'		: $blue,
+	'green'		: $green,
+	'red'			: $red,
+	'darkblue': $dblue,
+	'orange'	: $orange,
+	'black'		: $black,
+	'white'		: $white
+);

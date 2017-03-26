@@ -1,3 +1,6 @@
+@import '../../styles/_config.sass'
+@import '../../styles/_colors.scss'
+
 .Button
 	display: inline-block
 	text-align: center
@@ -9,26 +12,28 @@
 		color: white
 		border: none
 		box-shadow: none
-		&.blue
-			background-color: blue
-		&.red
-			background-color: red
-		&.green
-			background-color: green
+		
+		@each $colorName, $colorValue in $colorList
+			&.#{$colorName}
+				background-color: $colorValue
+
+				&:hover,
+				&:focus
+					background-color: lighten($colorValue, 12%)
 
 	&.outline
 		background: transparent
 		border-style: solid
-		&.blue
-			color: blue
-			border-color: blue
-		&.red
-			color: red
-			border-color: red
-		&.green
-			color: green
-			border-color: green
 
+		@each $colorName, $colorValue in $colorList
+			&.#{$colorName}
+				color: $colorValue
+				border-color: $colorValue
+
+				&:hover,
+				&:focus
+					color: lighten($colorValue, 12%)
+					border-color: lighten($colorValue, 12%)
 
 .small
 	font-size: .75rem
@@ -53,4 +58,62 @@
 		border-width: 5px
 
 .rounded
-	border-radius: .18rem
+	&.small
+		border-radius: $border-radius-small
+	&.medium
+		border-radius: $border-radius
+	&.large
+		border-radius: $border-radius-large
+
+
+.ButtonGroup
+	display: inline-block
+
+	&.groupFlex
+		display: flex
+
+		& .Button
+			flex: 1
+
+	& .Button
+		&.rounded + .rounded
+			border-radius: 0
+
+		&.small
+			&.rounded:first-child
+				border-radius: $border-radius-small 0 0 $border-radius-small - .25
+
+			&.rounded:last-child
+				border-radius: 0 $border-radius-small $border-radius-small 0
+
+		&.medium
+			&.rounded:first-child
+				border-radius: $border-radius 0 0 $border-radius
+
+			&.rounded:last-child
+				border-radius: 0 $border-radius $border-radius 0
+
+		&.large
+			&.rounded:first-child
+				border-radius: $border-radius-large 0 0 $border-radius-large
+
+			&.rounded:last-child
+				border-radius: 0 $border-radius-large $border-radius-large 0
+
+		&.filled
+			border-style: solid
+
+			@each $colorName, $colorValue in $colorList
+				&.#{$colorName}
+					border-color: $colorValue
+
+					&:hover,
+					&:focus
+						border-color: lighten($colorValue, 12%)
+
+			&.small
+				border-width: 3px
+			&.medium
+				border-width: 4px
+			&.large
+				border-width: 5px
