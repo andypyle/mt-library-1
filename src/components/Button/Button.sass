@@ -1,11 +1,12 @@
-@import '../../styles/_config.sass'
+@import '../../styles/_config.scss'
 @import '../../styles/_colors.scss'
 
 .Button
-	display: inline-block
-	text-align: center
-	font-family: sans-serif
-	font-weight: bold
+	display: inline-flex
+	justify-content: center
+	align-items: center
+	font-family: $font-thick
+	font-weight: 900
 	cursor: pointer
 
 	&.filled
@@ -38,9 +39,10 @@
 .small
 	font-size: .75rem
 	padding: .25rem .75rem
+	font-weight: 800
 
 .medium
-	font-size: 1rem
+	font-size: 1.25rem
 	padding: .5rem 1rem
 
 .large
@@ -66,6 +68,7 @@
 		border-radius: $border-radius-large
 
 
+
 .ButtonGroup
 	display: inline-block
 
@@ -75,34 +78,14 @@
 		& .Button
 			flex: 1
 
-	& .Button
-		&.rounded + .rounded
-			border-radius: 0
-
-		&.small
-			&.rounded:first-child
-				border-radius: $border-radius-small 0 0 $border-radius-small - .25
-
-			&.rounded:last-child
-				border-radius: 0 $border-radius-small $border-radius-small 0
-
-		&.medium
-			&.rounded:first-child
-				border-radius: $border-radius 0 0 $border-radius
-
-			&.rounded:last-child
-				border-radius: 0 $border-radius $border-radius 0
-
-		&.large
-			&.rounded:first-child
-				border-radius: $border-radius-large 0 0 $border-radius-large
-
-			&.rounded:last-child
-				border-radius: 0 $border-radius-large $border-radius-large 0
-
+	& > .Button
 		&.filled
 			border-style: solid
 
+			@each $size, $sizeValue in $buttonBorderWidths
+				&.#{$size}
+					border-width: $sizeValue
+				
 			@each $colorName, $colorValue in $colorList
 				&.#{$colorName}
 					border-color: $colorValue
@@ -111,9 +94,95 @@
 					&:focus
 						border-color: lighten($colorValue, 12%)
 
-			&.small
-				border-width: 3px
-			&.medium
-				border-width: 4px
-			&.large
-				border-width: 5px
+	& > .rounded:first-child
+		border-radius: $border-radius 0 0 $border-radius
+
+	& .DropdownContainer
+		&.Button
+			&.filled
+				border-style: solid
+				@each $size, $sizeValue in $buttonBorderWidths
+					&.#{$size}
+						border-width: $sizeValue
+
+				@each $colorName, $colorValue in $colorList
+					&.#{$colorName}
+						border-color: $colorValue
+
+						&:hover,
+						&:focus
+							border-color: lighten($colorValue, 12%)
+
+	& > .DropdownContainer:last-child
+		& > .Button
+			&.rounded
+				&.small
+					border-radius: 0 $border-radius-small $border-radius-small 0
+				&.medium
+					border-radius: 0 $border-radius $border-radius 0
+				&.large
+					border-radius: 0 $border-radius-large $border-radius-large 0
+
+	& > .DropdownContainer:first-child
+		& > .Button
+			&.rounded
+				&.small
+					border-radius: $border-radius-small 0 0 $border-radius-small
+				&.medium
+					border-radius: $border-radius 0 0 $border-radius
+				&.large
+					border-radius: $border-radius-large 0 0 $border-radius-large
+
+
+
+.DropdownContainer
+	display: inline-flex
+	flex-direction: column
+	position: relative
+
+	&.roundedOpen
+		background-color: purple !important
+		
+
+	&:hover
+		& > .ButtonDropdownList
+			display: inline-flex
+			opacity: 1
+			max-height: 600px
+			transition: all 240ms ease-in-out
+		& > .rounded
+			border-bottom-right-radius: 0 !important
+			border-bottom-left-radius: 0	!important
+			transition: all 240ms ease-in-out
+
+	& > .rounded
+		transition: all 240ms ease-in-out
+
+	& .ButtonDropdownList
+		flex: 0
+		max-height: 0px
+		overflow: hidden
+		flex-direction: column
+		position: absolute
+		top: 100%
+		z-index: 100
+		opacity: 0
+
+		&.ButtonDropdownSideLeft
+			left: 0
+
+		&.ButtonDropdownSideRight
+			right: 0
+
+		transition: all 240ms ease-in-out
+
+		& .ButtonDropdownListItem:last-child
+			& > .rounded
+				border-radius: 0 0 $border-radius $border-radius !important
+
+		& .ButtonDropdownListItem
+			display: flex
+
+			& > .Button
+				display: block
+				white-space: pre
