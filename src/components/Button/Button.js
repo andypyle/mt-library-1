@@ -48,7 +48,7 @@ const Button = ({
 	const mappedChildren = children && React.Children.toArray(children).map(mapChildrenFunction);
 	const renderChildren = mappedChildren && createElement('ul', { className: [styles.ButtonDropdownList, dropdownSide === 'left' ? styles.ButtonDropdownSideLeft : styles.ButtonDropdownSideRight].join(' ').trim() }, mappedChildren);
 
-	const renderButton = createElement(children ? 'div' : elementType, { href, ...events, className: classNames }, elementContents);
+	const renderButton = createElement(elementType, { href, ...events, className: classNames }, elementContents);
 
 	if (renderChildren) {
 		return createElement('div', { className: styles.DropdownContainer }, renderButton, renderChildren)
