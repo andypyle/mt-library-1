@@ -1,5 +1,6 @@
 @import '../../styles/_config.scss'
 @import '../../styles/_colors.scss'
+@import '../../styles/_mixins.sass'
 
 .Button
 	display: inline-flex
@@ -9,32 +10,18 @@
 	font-weight: 900
 	cursor: pointer
 
-	&.filled
-		color: white
-		border: none
-		box-shadow: none
-		
-		@each $colorName, $colorValue in $colorList
-			&.#{$colorName}
-				background-color: $colorValue
+.filled
+	color: white
+	border: none
+	box-shadow: none
+	
+	+FilledButtonColors
 
-				&:hover,
-				&:focus
-					background-color: lighten($colorValue, 12%)
+.outline
+	background: transparent
+	border-style: solid
 
-	&.outline
-		background: transparent
-		border-style: solid
-
-		@each $colorName, $colorValue in $colorList
-			&.#{$colorName}
-				color: $colorValue
-				border-color: $colorValue
-
-				&:hover,
-				&:focus
-					color: lighten($colorValue, 12%)
-					border-color: lighten($colorValue, 12%)
+	+OutlineButtonColors
 
 .small
 	font-size: .75rem
@@ -51,138 +38,173 @@
 
 .outline
 	border-style: solid
-
-	&.small
-		border-width: 3px
-	&.medium
-		border-width: 4px
-	&.large
-		border-width: 5px
+	+BorderWidths
 
 .rounded
-	&.small
-		border-radius: $border-radius-small
-	&.medium
-		border-radius: $border-radius
-	&.large
-		border-radius: $border-radius-large
+	+BorderRadii
 
 
 
-.ButtonGroup
-	display: inline-block
-
-	&.groupFlex
-		display: flex
-
-		& .Button
-			flex: 1
-
-	& > .Button
-		&.filled
-			border-style: solid
-
-			@each $size, $sizeValue in $buttonBorderWidths
-				&.#{$size}
-					border-width: $sizeValue
-				
-			@each $colorName, $colorValue in $colorList
-				&.#{$colorName}
-					border-color: $colorValue
-
-					&:hover,
-					&:focus
-						border-color: lighten($colorValue, 12%)
-
-	& > .rounded:first-child
-		border-radius: $border-radius 0 0 $border-radius
-
-	& .DropdownContainer
-		&.Button
-			&.filled
-				border-style: solid
-				@each $size, $sizeValue in $buttonBorderWidths
-					&.#{$size}
-						border-width: $sizeValue
-
-				@each $colorName, $colorValue in $colorList
-					&.#{$colorName}
-						border-color: $colorValue
-
-						&:hover,
-						&:focus
-							border-color: lighten($colorValue, 12%)
-
-	& > .DropdownContainer:last-child
-		& > .Button
-			&.rounded
-				&.small
-					border-radius: 0 $border-radius-small $border-radius-small 0
-				&.medium
-					border-radius: 0 $border-radius $border-radius 0
-				&.large
-					border-radius: 0 $border-radius-large $border-radius-large 0
-
-	& > .DropdownContainer:first-child
-		& > .Button
-			&.rounded
-				&.small
-					border-radius: $border-radius-small 0 0 $border-radius-small
-				&.medium
-					border-radius: $border-radius 0 0 $border-radius
-				&.large
-					border-radius: $border-radius-large 0 0 $border-radius-large
-
-
+// Dropdown buttons
 
 .DropdownContainer
 	display: inline-flex
 	flex-direction: column
 	position: relative
 
-	&.roundedOpen
-		background-color: purple !important
-		
-
 	&:hover
-		& > .ButtonDropdownList
-			display: inline-flex
-			opacity: 1
-			max-height: 600px
-			transition: all 240ms ease-in-out
 		& > .rounded
+			border-bottom-left-radius: 0 !important
 			border-bottom-right-radius: 0 !important
-			border-bottom-left-radius: 0	!important
-			transition: all 240ms ease-in-out
+		& > .DropdownList
+			height: auto
+			pointer-events: auto
+			opacity: 1
 
-	& > .rounded
-		transition: all 240ms ease-in-out
+			transition: opacity 200ms ease-in-out
 
-	& .ButtonDropdownList
-		flex: 0
-		max-height: 0px
-		overflow: hidden
-		flex-direction: column
-		position: absolute
-		top: 100%
-		z-index: 100
-		opacity: 0
+.DropdownList
+	display: flex
+	flex-direction: column
+	flex: 1
+	position: absolute
+	z-index: 1000
+	top: 100%
+	pointer-events: none
+	height: 0
+	opacity: 0
 
-		&.ButtonDropdownSideLeft
-			left: 0
+	& > .DropdownListItem:first-child > .rounded,
+	& > .DropdownListItem:first-child > .DropdownContainer > .rounded
+		border-radius: 0 !important
 
-		&.ButtonDropdownSideRight
-			right: 0
+	& > .DropdownListItem:last-child > .rounded,
+	& > .DropdownListItem:last-child > .DropdownContainer > .rounded
+		+BorderRadii(bottom)
 
-		transition: all 240ms ease-in-out
 
-		& .ButtonDropdownListItem:last-child
-			& > .rounded
-				border-radius: 0 0 $border-radius $border-radius !important
+.DropdownListItem
+	display: flex
+	& > a,
+	& > button
+		flex: 1
 
-		& .ButtonDropdownListItem
-			display: flex
 
-			& > .Button
-				display: block
-				white-space: pre
+.DropdownSideLeft
+	& > .DropdownList
+		left: 0
+		text-align: left
+
+		& .DropdownSideRight .DropdownList *
+			justify-content: flex-start
+			text-align: left
+
+		& > .DropdownListItem > .Button
+			justify-content: flex-start
+			flex: 1
+
+.DropdownSideRight
+	& > .DropdownList
+		right: 0
+		text-align: right
+
+		& > .DropdownListItem .DropdownListItem .Button
+			justify-content: flex-start
+
+		& > .DropdownListItem > .Button
+			justify-content: flex-end
+
+
+
+// ButtonGroup component.
+
+.ButtonGroup
+	display: inline-flex
+
+	& > .Button,
+	& > .DropdownContainer > .Button
+		&.filled
+			+FilledButtonWithBorderColors
+
+	& > .rounded:first-child,
+	& > .DropdownContainer:first-child > .rounded
+		+BorderRadii(left)
+
+	& > .rounded:last-child,
+	& > .DropdownContainer:last-child > .rounded
+		+BorderRadii(right)
+
+.groupFlex
+	display: flex
+
+	& > .Button,
+	& > .DropdownContainer
+		flex: 1
+
+
+.vertical
+	flex-direction: column
+
+	& > .rounded:first-child,
+	& > .DropdownContainer:first-child > .rounded
+		+BorderRadii(top)
+
+	& > .rounded:last-child,
+	& > .DropdownContainer:last-child > .rounded
+		+BorderRadii(bottom)
+
+	& > .DropdownContainer
+		&:hover
+			&.DropdownSideLeft
+				& > .DropdownList
+					top: 0
+					transform: translateX(-100%)
+
+					& > .DropdownListItem:first-child > .rounded
+						+BorderRadii(topleft, true)
+
+				& > .rounded
+					border-bottom-left-radius: 0 !important
+					border-top-left-radius: 0 !important
+
+			&.DropdownSideRight
+				& > .DropdownList
+					top: 0
+					transform: translateX(calc(100% - 1px))
+
+					& > .DropdownListItem:first-child > .rounded
+						+BorderRadii(topright, true)
+
+				& > .rounded
+					border-bottom-right-radius: 0 !important
+					border-top-right-radius: 0 !important
+
+.DropdownContainer
+	& .DropdownContainer
+		&:hover
+			&.DropdownSideLeft
+				& > .DropdownList
+					top: 0
+					transform: translateX(-100%)
+
+					& > .DropdownListItem:first-child > .rounded
+						+BorderRadii(topleft, true)
+
+				& > .rounded
+					border-bottom-left-radius: 0 !important
+					border-top-left-radius: 0 !important
+
+			&.DropdownSideRight
+				& > .DropdownList
+					top: 0
+					transform: translateX(calc(100% - 1px))
+
+					& > .DropdownListItem:first-child > .rounded
+						+BorderRadii(topright, true)
+
+				& > .rounded
+					border-bottom-right-radius: 0 !important
+					border-top-right-radius: 0 !important
+
+
+

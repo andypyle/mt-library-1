@@ -1,8 +1,8 @@
-import React, { createElement, PropTypes } from 'react';
+import React, { createElement, cloneElement, PropTypes } from 'react';
 import styles from './Button.sass';
 
 const mapChildrenFunction = (child, index) => {
-	return <li key={`Dropdown-${index}`} className={styles.ButtonDropdownListItem}>{child}</li>
+	return <li key={`Dropdown-${index}`} className={styles.DropdownListItem}>{child}</li>
 }
 
 const Button = ({
@@ -15,7 +15,8 @@ const Button = ({
 		onClick,
 		onContextMenu,
 		className = '',
-		dropdownSide = 'left',
+		dropdownSide = 'right',
+		vertical,
 		children
 	}) => {
 	const additionalClassnames = className.split(' ');
@@ -41,17 +42,17 @@ const Button = ({
 
 	// TODO: Add icon.
 	const elementContents = children ?
-		createElement('span', null, text, createElement('span', { style: { lineHeight: '0', marginLeft: '.5rem' } }, `\u25BC`)) :
+		createElement('span', null, dropdownSide === 'left' ? createElement('span', { style: { lineHeight: '0', marginRight: '.5rem' } }, vertical ? `\u25C0` : `\u25BC`) : null, text, dropdownSide === 'right' ? createElement('span', { style: { lineHeight: '0', marginLeft: '.5rem' } }, vertical ? `\u25B6` : `\u25BC`) : null	) :
 		text;
 
 	// If children are present, it's probably a dropdown.
 	const mappedChildren = children && React.Children.toArray(children).map(mapChildrenFunction);
-	const renderChildren = mappedChildren && createElement('ul', { className: [styles.ButtonDropdownList, dropdownSide === 'left' ? styles.ButtonDropdownSideLeft : styles.ButtonDropdownSideRight].join(' ').trim() }, mappedChildren);
+	const renderChildren = mappedChildren && createElement('ul', { className: styles.DropdownList }, mappedChildren);
 
 	const renderButton = createElement(elementType, { href, ...events, className: classNames }, elementContents);
 
 	if (renderChildren) {
-		return createElement('div', { className: styles.DropdownContainer }, renderButton, renderChildren)
+		return createElement('div', { className: [styles.DropdownContainer, dropdownSide === 'left' ? styles.DropdownSideLeft : styles.DropdownSideRight].join(' ').trim() }, renderButton, renderChildren)
 	}
 
 	return renderButton;

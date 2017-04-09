@@ -26,3 +26,11 @@ describe('<ButtonGroup><Button text="Button 1" /><Button text="Button 2" /></But
 		expect(wrapper.find(Button).length).to.equal(2);
 	});
 });
+
+
+describe('<ButtonGroup vertical><Button text="Button 1" /><Button text="Button 2" /></ButtonGroup>', () => {
+	const wrapper = mount(<ButtonGroup vertical><Button text="Button 1" /><Button text="Button 2" /></ButtonGroup>);
+	it('should have the vertical class', () => {
+		expect(wrapper.hasClass(styles.vertical)).to.equal(true);
+	})
+});

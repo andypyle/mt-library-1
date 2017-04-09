@@ -6,13 +6,14 @@ const ButtonGroup = ({
 	btnStyle,
 	rounded,
 	flex,
+	vertical,
 	className = ''
 }) => {
 	const additionalClassNames = className.split(' ');
 	const classNames = [
 		styles.ButtonGroup,
-		rounded && styles.groupRounded,
 		flex && styles.groupFlex,
+		vertical && styles.vertical,
 		...additionalClassNames
 	].join(' ').trim();
 
