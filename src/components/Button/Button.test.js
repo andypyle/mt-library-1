@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow, render} from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import styles from './Button.sass';
 
