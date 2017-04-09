@@ -7,11 +7,7 @@ const If = ({condition, children}) => {
 
 If.propTypes = {
 	condition: PropTypes.bool.isRequired,
-	children: (props, propName, componentName) => {
-		if (React.Children.toArray(props[propName]).length > 2) {
-			throw new Error('`' + componentName + '` expects no more than 2 children.');
-		}
-	}
+	children: (props, propName, componentName) => React.Children.toArray(props[propName]).length > 2 && new Error('`' + componentName + '` expects no more than 2 children.')
 };
 
 export default If;

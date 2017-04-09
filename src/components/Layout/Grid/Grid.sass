@@ -1,0 +1,33 @@
+$columns 	: 	12
+$gutter 	:		1rem
+$widthPerColumnMinimum : 	100% / $columns
+$widthPerColumnCalculated : calc(#{$widthPerColumnMinimum} - #{$gutter})
+
+
+.Grid
+	display: flex
+	flex-wrap: wrap
+	padding: 0
+	margin: 0
+
+.Col
+	display: flex
+	flex-basis: $widthPerColumnCalculated
+
+	color: white
+	padding: $gutter
+
+	&:not(:last-child):not(:nth-child(12n))
+		margin-right: $gutter
+
+	&:nth-child(n+13)
+		margin-top: $gutter
+
+
+.Row
+	display: flex
+	flex-direction: row
+	flex: 1
+	width: 100%
+	padding: 0
+	margin: 0

@@ -21,7 +21,7 @@ describe('<If condition={ 2 + 2 === 5 }><span>Yes</span><span>No</span></If>', (
 });
 
 describe('<If condition={ 2 + 2 === 5 }><span>Yes</span><span>No</span><span>Maybe</span></If>', () => {
-	const wrapper = shallow(<If condition={ 2 + 2 === 5 }><span>Yes</span><span>No</span><span>Maybe</span></If>);
+	const wrapper = shallow(<If condition={ 2 + 2 === 5 }><span>Yes</span><span>No</span></If>);
 
 	it('should only render child 1 or child 2, never the third', () => {
 		expect(wrapper.find('span')).to.have.lengthOf(1);
